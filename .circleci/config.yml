@@ -42,10 +42,10 @@ jobs:
       - restore_cache:
           keys: [test-frontend]
       - run:
-        name: frontend test
-        command: |
-          npm i 
-          npm run test
+          name: frontend test
+          command: |
+            npm i 
+            npm run test
                 
   test-backend:
     docker:
@@ -55,10 +55,10 @@ jobs:
       - restore_cache:
         keys: [test-backend]
       - run:
-        name: backend test
-        command: |
-          npm i
-          npm run test
+          name: backend test
+          command: |
+            npm i
+            npm run test
 
 workflows:
   default:
