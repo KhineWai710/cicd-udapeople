@@ -59,7 +59,7 @@ jobs:
       - run:
           name: backend test
           command: |
-            cd frontend
+            cd backend
             npm i
             npm i oauth-sign
             npm run test
