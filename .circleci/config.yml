@@ -25,7 +25,6 @@ jobs:
                 }
               ]
             }
-          event: always
       - run:
           name: Build front-end
           command: |
