@@ -41,7 +41,7 @@ jobs:
                   "fields": [
                     {
                       "type": "plain_text",
-                      "text": "This is fail pass notification",
+                      "text": "This is Pass notification",
                       "emoji": true
                     }
                   ]
