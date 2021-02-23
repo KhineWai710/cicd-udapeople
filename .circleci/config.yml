@@ -9,15 +9,19 @@ jobs:
       - checkout
       - restore_cache:
           keys: [frontend-build]
-      - slack/notify:
-          event: pass
-          template: basic_fail_1
       - run:
           name: Build front-end
           command: |
             cd frontend
             npm i
             npm run build
+      - slack/notify:
+          branch_pattern: main
+          event: fail
+          template: basic_fail_1
+      - slack/notify:
+          event: pass
+          template: basic_fail_1
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
