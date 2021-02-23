@@ -17,21 +17,26 @@ jobs:
             npm run build
       - slack/notify:
           custom: |
-            {
-              "blocks": [
                 {
-                  "type": "section",
-                  "fields": [
+                  "blocks": [
                     {
-                      "type": "plain_text",
-                      "text": "This is fail event notification",
-                      "emoji": true
+                      "type": "header",
+                      "text": {
+                        "type": "plain_text",
+                        "text": "Build Fail ! :red_circle:",
+                        "emoji": true
+                      }
+                    },
+                    {
+                      "type": "section",
+                      "text": {
+                        "type": "mrkdwn",
+                        "text": "*Repository*: $CIRCLE_PROJECT_REPONAME \n *Branch*: $CIRCLE_BRANCH\n*PullRequests*: $CIRCLE_PULL_REQUESTS"
+                      }
                     }
                   ]
                 }
-              ]
-            }
-          event: fail
+          event: pass
       - slack/notify:
           custom: |
             {
@@ -48,7 +53,7 @@ jobs:
                 }
               ]
             }
-          event: pass
+          event: fail
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
