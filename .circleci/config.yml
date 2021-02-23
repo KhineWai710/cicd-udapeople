@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  slack: circleci/slack@3.4.2
+  slack: circleci/slack@4.3.0
 jobs:
   build-frontend:
     docker:
@@ -15,10 +15,40 @@ jobs:
             cd frontend
             npm i
             npm run build
-      - slack/status:
-          success_message: ':circleci-pass: $CIRCLE_BRANCH のデプロイが完了しました\n:github_octocat: User：$CIRCLE_USERNAME'
-          failure_message: ':circleci-fail: $CIRCLE_BRANCH のデプロイが失敗しました\n:github_octocat: User：$CIRCLE_USERNAME'
-          webhook: '${SLACK_WEBHOOK}'
+      - slack/notify:
+          custom: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "plain_text",
+                      "text": "This is fail event notification",
+                      "emoji": true
+                    }
+                  ]
+                }
+              ]
+            }
+          event: fail
+      - slack/notify:
+          custom: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "plain_text",
+                      "text": "This is fail pass notification",
+                      "emoji": true
+                    }
+                  ]
+                }
+              ]
+            }
+          event: pass
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
