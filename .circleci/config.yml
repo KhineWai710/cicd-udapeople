@@ -6,7 +6,7 @@ jobs:
     docker:
       - image: circleci/node:13.8.0
     environment:
-      branch_url: $REPO_URL/tree/$CIRCLE_BRANCH
+      branch_url: << pipeline.project.git_url >>/tree/<< pipeline.git.branch >>
     steps:
       - checkout
       - restore_cache:
@@ -33,7 +33,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "<$REPO_URL|*$CIRCLE_PROJECT_REPONAME*>(<${branch_url}|$CIRCLE_BRANCH>)\n*PullRequests*: $CIRCLE_PULL_REQUESTS \n <$CIRCLE_BUILD_URL|<<pipeline.number>> \n *Repository*: $CIRCLE_REPOSITORY_URL \n *Commit*: $CIRCLE_SHA1"
+                    "text": "<$REPO_URL|*$CIRCLE_PROJECT_REPONAME*>(<${branch_url}|$CIRCLE_BRANCH>)\n*PullRequests*: $CIRCLE_PULL_REQUESTS \n <$CIRCLE_BUILD_URL|<< pipeline.number >>> \n *Repository*: $CIRCLE_REPOSITORY_URL \n *Commit*: $CIRCLE_SHA1"
                   }
                 }
               ]
