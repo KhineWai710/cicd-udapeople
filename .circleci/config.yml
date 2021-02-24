@@ -8,6 +8,7 @@ jobs:
     environment:
       branch_url: << pipeline.project.git_url >>/tree/<< pipeline.git.branch >>
       commit_url: << pipeline.project.git_url >>/commit/<< pipeline.git.revision >>
+      SHORT_GIT_HASH: $(echo $CIRCLE_SHA1 | cut -c -7)
     steps:
       - checkout
       - restore_cache:
@@ -19,7 +20,6 @@ jobs:
             npm i
             npm run build
             echo "export COMMIT_MESSAGE=\"$(git log --format=oneline -n 1 $CIRCLE_SHA1)\"" >> $BASH_ENV
-            SHORT_HASH: $(echo $CIRCLE_SHA1 | cut -c -7)
             source $BASH_ENV
       - slack/notify:
           custom: |
@@ -37,7 +37,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "<$REPO_URL|*$CIRCLE_PROJECT_REPONAME*>(<${branch_url}|$CIRCLE_BRANCH>)\n*PullRequests*: $CIRCLE_PULL_REQUESTS \n <$CIRCLE_BUILD_URL|$CIRCLE_BUILD_NUM> \n <${commit_url}|(${SHORT_HASH})${COMMIT_MESSAGE}> \n"
+                    "text": "<$REPO_URL|*$CIRCLE_PROJECT_REPONAME*>(<${branch_url}|$CIRCLE_BRANCH>)\n*PullRequests*: $CIRCLE_PULL_REQUESTS \n <$CIRCLE_BUILD_URL|$CIRCLE_BUILD_NUM> \n <${commit_url}|(${SHORT_GIT_HASH})${COMMIT_MESSAGE}> \n"
                   }
                 }
               ]
