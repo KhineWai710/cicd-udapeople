@@ -19,6 +19,7 @@ jobs:
             npm i
             npm run build
             echo "export COMMIT_MESSAGE=\"$(git log --format=oneline -n 1 $CIRCLE_SHA1)\"" >> $BASH_ENV
+            echo "export SHORT_HASH=\"$(echo $CIRCLE_SHA1 | cut -c -7)\"" >>$BASH_ENV
             source $BASH_ENV
       - slack/notify:
           custom: |
@@ -36,7 +37,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "<$REPO_URL|*$CIRCLE_PROJECT_REPONAME*>(<${branch_url}|$CIRCLE_BRANCH>)\n*PullRequests*: $CIRCLE_PULL_REQUESTS \n <$CIRCLE_BUILD_URL|$CIRCLE_BUILD_NUM> \n <${commit_url}|${COMMIT_MESSAGE}> \n"
+                    "text": "<$REPO_URL|*$CIRCLE_PROJECT_REPONAME*>(<${branch_url}|$CIRCLE_BRANCH>)\n*PullRequests*: $CIRCLE_PULL_REQUESTS \n <$CIRCLE_BUILD_URL|$CIRCLE_BUILD_NUM> \n <${commit_url}|(${SHORT_HASH})${COMMIT_MESSAGE}> \n"
                   }
                 }
               ]
