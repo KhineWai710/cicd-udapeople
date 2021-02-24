@@ -17,25 +17,25 @@ jobs:
             npm run build
       - slack/notify:
           custom: |
+            {
+              "blocks": [
                 {
-                  "blocks": [
-                    {
-                      "type": "header",
-                      "text": {
-                        "type": "plain_text",
-                        "text": "Build Fail ! :red_circle:",
-                        "emoji": true
-                      }
-                    },
-                    {
-                      "type": "section",
-                      "text": {
-                        "type": "mrkdwn",
-                        "text": "*Repository*: $CIRCLE_PROJECT_REPONAME \n *Branch*: $CIRCLE_BRANCH\n*PullRequests*: $CIRCLE_PULL_REQUESTS \n *Build URL*: $CIRCLE_BUILD_URL \n *Repository*: $CIRCLE_REPOSITORY_URL"
-                      }
-                    }
-                  ]
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "Build Fail ! :red_circle:",
+                    "emoji": true
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "<$CIRCLE_REPOSITORY_URL | $CIRCLE_PROJECT_REPONAME>*Repository*: $CIRCLE_PROJECT_REPONAME \n *Branch*: $CIRCLE_BRANCH\n*PullRequests*: $CIRCLE_PULL_REQUESTS \n *Build URL*: $CIRCLE_BUILD_URL \n *Repository*: $CIRCLE_REPOSITORY_URL"
+                  }
                 }
+              ]
+            }
           event: pass
       - slack/notify:
           custom: |
