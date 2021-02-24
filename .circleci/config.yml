@@ -19,7 +19,7 @@ jobs:
             npm i
             npm run build
             echo "export COMMIT_MESSAGE=\"$(git log --format=oneline -n 1 $CIRCLE_SHA1)\"" >> $BASH_ENV
-            echo "export SHORT_HASH=\"$(echo $CIRCLE_SHA1 | cut -c -7)\"" >>$BASH_ENV
+            SHORT_HASH: $(echo $CIRCLE_SHA1 | cut -c -7)
             source $BASH_ENV
       - slack/notify:
           custom: |
