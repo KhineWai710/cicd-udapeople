@@ -31,7 +31,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "<$CIRCLE_REPOSITORY_URL | $CIRCLE_PROJECT_REPONAME>*Repository*: $CIRCLE_PROJECT_REPONAME \n *Branch*: $CIRCLE_BRANCH\n*PullRequests*: $CIRCLE_PULL_REQUESTS \n *Build URL*: $CIRCLE_BUILD_URL \n *Repository*: $CIRCLE_REPOSITORY_URL"
+                    "text": "<$CIRCLE_REPOSITORY_URL | $CIRCLE_PROJECT_REPONAME>*Repository*: $CIRCLE_PROJECT_REPONAME \n *Branch*: $CIRCLE_BRANCH\n*PullRequests*: $CIRCLE_PULL_REQUESTS \n *Build URL*: $CIRCLE_BUILD_URL \n *Repository*: $CIRCLE_REPOSITORY_URL \n *Commit*: $CIRCLE_SHA1"
                   }
                 }
               ]
