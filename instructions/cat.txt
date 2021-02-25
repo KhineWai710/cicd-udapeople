@@ -1,0 +1,8 @@
+total 88
+-rw-r--r--   1 khinewaioo  staff   1588 Feb 22 13:20 0-selling-cicd.md
+-rw-r--r--   1 khinewaioo  staff   5767 Feb 22 13:20 1-getting-started.md
+-rw-r--r--   1 khinewaioo  staff   6481 Feb 22 13:20 2-deploying-trustworthy-code.md
+-rw-r--r--   1 khinewaioo  staff  18508 Feb 22 13:20 3-configuration-management.md
+-rw-r--r--   1 khinewaioo  staff   2914 Feb 22 13:20 4-turn-errors-into-sirens.md
+drwxr-xr-x  16 khinewaioo  staff    512 Feb 22 13:20 screenshots
+-rw-r--r--   1 khinewaioo  staff      0 Feb 25 23:18 cat.txt
