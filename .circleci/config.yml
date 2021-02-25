@@ -23,7 +23,7 @@ jobs:
             echo "export BUILD_SUCCESS_TEMPLATE=$(cat message_templates/build_success.json)" >> $BASH_ENV
       - slack/notify:
           event: pass
-          template: BUILD_SUCCESS_TEMPLATE
+          template: $test_template
           channel: C01NF23KWTZ
       - slack/notify:
           custom: |
