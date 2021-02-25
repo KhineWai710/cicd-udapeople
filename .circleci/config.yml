@@ -19,11 +19,12 @@ jobs:
             npm i
             npm run build
             echo "export COMMIT_MESSAGE=\"$(git log --format=oneline -n 1 --abbrev-commit)\"" >> $BASH_ENV
-            echo "export BUILD_SUCCESS_TEMPLATE=$(cat /tmp/message_templates/build_success.json)" >> $BASH_ENV
+            echo "export BUILD_SUCCESS_TEMPLATE=$(cat tmp/message_templates/build_success.json)" >> $BASH_ENV
+            echo "ls -ltr"
             source $BASH_ENV
       - slack/notify:
-          template: BUILD_SUCCESS_TEMPLATE
           event: pass
+          template: BUILD_SUCCESS_TEMPLATE
           channel: C01NF23KWTZ
       - slack/notify:
           custom: |
