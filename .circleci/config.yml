@@ -58,7 +58,7 @@ jobs:
                 "type": "section",
                 "text": {
                   "type": "mrkdwn",
-                  "text": "Success in build $CIRCLE_PULL_REQUESTS of <$REPO_URL|$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME>(<${branch_url}|$CIRCLE_BRANCH>)\n Build No: <$CIRCLE_BUILD_URL|$CIRCLE_BUILD_NUM> \n - ${COMMIT_MESSAGE} <${commit_url}|${COMMIT_SHA}> \n"
+                  "text": "Success in build $CIRCLE_PULL_REQUESTS of <$REPO_URL|$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME>(<${branch_url}|$CIRCLE_BRANCH>)\n Build No: <$CIRCLE_BUILD_URL|$CIRCLE_BUILD_NUM> \n - ${COMMIT_MESSAGE} (<${commit_url}|${COMMIT_SHA}>) \n"
                 }
               }
             ]
@@ -190,12 +190,12 @@ workflows:
   default:
     jobs:
       - build-frontend
-      # - build-backend
-      # - test-frontend:
-      #     requires: [build-frontend]
-      # - test-backend:
-      #     requires: [build-backend]
-      # - scan-frontend:
-      #     requires: [build-frontend]
-      # - scan-backend:
-      #     requires: [build-backend]
+      - build-backend
+      - test-frontend:
+          requires: [build-frontend]
+      - test-backend:
+          requires: [build-backend]
+      - scan-frontend:
+          requires: [build-frontend]
+      - scan-backend:
+          requires: [build-backend]
