@@ -27,7 +27,7 @@ Resources:
     Properties:
       InstanceType: t2.micro
       SecurityGroups:
-        - Ref: InstanceSecurityGroup
+        - Ref: InstanceSecurityGroupss
       KeyName: kwo_aws
       ImageId: ami-0f2dd5fc989207c82 
       Tags:
