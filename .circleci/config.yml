@@ -37,7 +37,7 @@ jobs:
                 "type": "section",
                 "text": {
                   "type": "mrkdwn",
-                  "text": "Failed in build $CIRCLE_PULL_REQUESTS of <$REPO_URL|$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME>(<${branch_url}|$CIRCLE_BRANCH>)\n Build No: <$CIRCLE_BUILD_URL|$CIRCLE_BUILD_NUM> \n - ${COMMIT_MESSAGE} <${commit_url}|${COMMIT_SHA}> \n"
+                  "text": "Failed in build $CIRCLE_PULL_REQUESTS of <$REPO_URL|$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME>(<${branch_url}|$CIRCLE_BRANCH>)\n Build No: <$CIRCLE_BUILD_URL|$CIRCLE_BUILD_NUM> \n - ${COMMIT_MESSAGE} (<${commit_url}|${COMMIT_SHA})> \n"
                 }
               }
             ]
@@ -83,7 +83,7 @@ jobs:
             npm run build
             echo "export COMMIT_MESSAGE=\"$(git log --abbrev-commit --abbrev=1 --oneline)\"" >> $BASH_ENV
       - slack/notify:
-          event: fail
+          event: pass
           custom: |
             {
               "blocks": [
@@ -125,7 +125,7 @@ jobs:
               }
             ]
             }
-          event: pass
+          event: fail
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
