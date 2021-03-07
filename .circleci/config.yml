@@ -80,7 +80,7 @@ jobs:
             cd backend
             npm i
             npm run build
-            echo "export COMMIT_MESSAGE=\"$(git log --format=oneline -n 1 --abbrev-commit)\"" >> $BASH_ENV
+            echo "export COMMIT_MESSAGE=\"$(git log --abbrev-commit --abbrev=1 --oneline)\"" >> $BASH_ENV
       - slack/notify:
           event: fail
           custom: |
@@ -119,7 +119,7 @@ jobs:
                 "type": "section",
                 "text": {
                   "type": "mrkdwn",
-                  "text": "Build Success $CIRCLE_PULL_REQUESTS of <$REPO_URL|*$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME*>(<${branch_url}|$CIRCLE_BRANCH>)\n *Build No*: <$CIRCLE_BUILD_URL|$CIRCLE_BUILD_NUM> \n *Commit* : <${commit_url}|${COMMIT_MESSAGE}> \n"
+                  "text": "Build Success $CIRCLE_PULL_REQUESTS of <$REPO_URL|*$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME*>(<${branch_url}|$CIRCLE_BRANCH>)\n Build No: *<$CIRCLE_BUILD_URL|$CIRCLE_BUILD_NUM>* \n Commit : *<${commit_url}|${COMMIT_MESSAGE}>* \n"
                 }
               }
             ]
@@ -170,7 +170,7 @@ jobs:
           name: frontend scan
           command: |
             cd frontend
-            npm audit --audit-level=critical
+            npm audit --audit-level=critical --force
 
   scan-backend:
     docker:
