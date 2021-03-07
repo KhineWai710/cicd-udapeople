@@ -49,7 +49,7 @@ jobs:
                 "type": "header",
                 "text": {
                   "type": "plain_text",
-                  "text": "Build Success ! :heart_green:",
+                  "text": "Build Success ! :large_green_circle: ",
                   "emoji": true
                 }
               },
@@ -80,6 +80,51 @@ jobs:
             cd backend
             npm i
             npm run build
+            echo "export COMMIT_MESSAGE=\"$(git log --format=oneline -n 1 --abbrev-commit)\"" >> $BASH_ENV
+      - slack/notify:
+          event: fail
+          custom: |
+            {
+              "blocks": [
+              {
+                "type": "header",
+                "text": {
+                  "type": "plain_text",
+                  "text": "Build Fail ! :red_circle:",
+                  "emoji": true
+                }
+              },
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "Failed in build $CIRCLE_PULL_REQUESTS of <$REPO_URL|*$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME*>(<${branch_url}|$CIRCLE_BRANCH>)\n *Build No*: <$CIRCLE_BUILD_URL|$CIRCLE_BUILD_NUM> \n *Commit* : <${commit_url}|${COMMIT_MESSAGE}> \n"
+                }
+              }
+            ]
+            }
+      - slack/notify:
+          custom: |
+            {
+              "blocks": [
+              {
+                "type": "header",
+                "text": {
+                  "type": "plain_text",
+                  "text": "Build Success ! :large_green_circle: ",
+                  "emoji": true
+                }
+              },
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "Build Success $CIRCLE_PULL_REQUESTS of <$REPO_URL|*$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME*>(<${branch_url}|$CIRCLE_BRANCH>)\n *Build No*: <$CIRCLE_BUILD_URL|$CIRCLE_BUILD_NUM> \n *Commit* : <${commit_url}|${COMMIT_MESSAGE}> \n"
+                }
+              }
+            ]
+            }
+          event: pass
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
