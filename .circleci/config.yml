@@ -19,6 +19,7 @@ jobs:
             npm i
             npm run build
             echo "export COMMIT_MESSAGE=\"$(git log --pretty=format:%s -n 1 --abbrev-commit)\"" >> $BASH_ENV
+            echo "export COMMIT_SHA=\"$(git log --pretty=format:%d -n 1 --abbrev-commit)\"" >> $BASH_ENV
       - slack/notify:
           event: fail
           custom: |
@@ -36,7 +37,7 @@ jobs:
                 "type": "section",
                 "text": {
                   "type": "mrkdwn",
-                  "text": "Failed in build $CIRCLE_PULL_REQUESTS of <$REPO_URL|*$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME*>(<${branch_url}|$CIRCLE_BRANCH>)\n *Build No*: <$CIRCLE_BUILD_URL|$CIRCLE_BUILD_NUM> \n *Commit* : <${commit_url}|${COMMIT_MESSAGE}> \n"
+                  "text": "Failed in build $CIRCLE_PULL_REQUESTS of <$REPO_URL|$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME>(<${branch_url}|$CIRCLE_BRANCH>)\n Build No: <$CIRCLE_BUILD_URL|$CIRCLE_BUILD_NUM> \n - ${COMMIT_MESSAGE} <${commit_url}|${COMMIT_SHA}> \n"
                 }
               }
             ]
@@ -57,7 +58,7 @@ jobs:
                 "type": "section",
                 "text": {
                   "type": "mrkdwn",
-                  "text": "Build Success $CIRCLE_PULL_REQUESTS of <$REPO_URL|*$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME*>(<${branch_url}|$CIRCLE_BRANCH>)\n *Build No*: <$CIRCLE_BUILD_URL|$CIRCLE_BUILD_NUM> \n *Commit* : <${commit_url}|${COMMIT_MESSAGE}> \n"
+                  "text": "Success in build $CIRCLE_PULL_REQUESTS of <$REPO_URL|$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME>(<${branch_url}|$CIRCLE_BRANCH>)\n Build No: <$CIRCLE_BUILD_URL|$CIRCLE_BUILD_NUM> \n - ${COMMIT_MESSAGE} <${commit_url}|${COMMIT_SHA}> \n"
                 }
               }
             ]
