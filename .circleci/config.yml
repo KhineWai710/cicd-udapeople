@@ -37,7 +37,7 @@ jobs:
                 "type": "section",
                 "text": {
                   "type": "mrkdwn",
-                  "text": "Failed in build $CIRCLE_PULL_REQUESTS of <$REPO_URL|$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME>(<${branch_url}|$CIRCLE_BRANCH>)\n Build No: <$CIRCLE_BUILD_URL|$CIRCLE_BUILD_NUM> \n - ${COMMIT_MESSAGE} (<${commit_url}|${COMMIT_SHA})> \n"
+                  "text": "Failed frontend in build $CIRCLE_PULL_REQUESTS of <$REPO_URL|$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME>(<${branch_url}|$CIRCLE_BRANCH>)\n Build No: <$CIRCLE_BUILD_URL|$CIRCLE_BUILD_NUM> \n - ${COMMIT_MESSAGE} (<${commit_url}|${COMMIT_SHA})> \n"
                 }
               }
             ]
@@ -58,7 +58,7 @@ jobs:
                 "type": "section",
                 "text": {
                   "type": "mrkdwn",
-                  "text": "Success in build $CIRCLE_PULL_REQUESTS of <$REPO_URL|$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME>(<${branch_url}|$CIRCLE_BRANCH>)\n Build No: <$CIRCLE_BUILD_URL|$CIRCLE_BUILD_NUM> \n - ${COMMIT_MESSAGE} (<${commit_url}|${COMMIT_SHA}>) \n"
+                  "text": "Success frontend in build $CIRCLE_PULL_REQUESTS of <$REPO_URL|$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME>(<${branch_url}|$CIRCLE_BRANCH>)\n Build No: <$CIRCLE_BUILD_URL|$CIRCLE_BUILD_NUM> \n - ${COMMIT_MESSAGE} (<${commit_url}|${COMMIT_SHA}>) \n"
                 }
               }
             ]
@@ -103,7 +103,7 @@ jobs:
                 "type": "section",
                 "text": {
                   "type": "mrkdwn",
-                  "text": "Failed in build $CIRCLE_PULL_REQUESTS of <$REPO_URL|*$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME*>(<${branch_url}|$CIRCLE_BRANCH>)\n *Build No*: <$CIRCLE_BUILD_URL|$CIRCLE_BUILD_NUM> \n *Commit* : <${commit_url}|${COMMIT_MESSAGE}> \n"
+                  "text": "Failed Backend in build $CIRCLE_PULL_REQUESTS of <$REPO_URL|*$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME*>(<${branch_url}|$CIRCLE_BRANCH>)\n *Build No*: <$CIRCLE_BUILD_URL|$CIRCLE_BUILD_NUM> \n *Commit* : <${commit_url}|${COMMIT_MESSAGE}> \n"
                 }
               }
             ]
@@ -124,7 +124,7 @@ jobs:
                 "type": "section",
                 "text": {
                   "type": "mrkdwn",
-                  "text": "Build Success $CIRCLE_PULL_REQUESTS of <$REPO_URL|*$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME*>(<${branch_url}|$CIRCLE_BRANCH>)\n Build No: *<$CIRCLE_BUILD_URL|$CIRCLE_BUILD_NUM>* \n Commit : *<${commit_url}|${COMMIT_MESSAGE}>* \n"
+                  "text": "Success Backend in build $CIRCLE_PULL_REQUESTS of <$REPO_URL|*$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME*>(<${branch_url}|$CIRCLE_BRANCH>)\n Build No: *<$CIRCLE_BUILD_URL|$CIRCLE_BUILD_NUM>* \n Commit : *<${commit_url}|${COMMIT_MESSAGE}>* \n"
                 }
               }
             ]
@@ -193,13 +193,13 @@ jobs:
 workflows:
   default:
     jobs:
-      # - build-frontend
+      - build-frontend
       - build-backend
-      # - test-frontend:
-      #     requires: [build-frontend]
-      # - test-backend:
-      #     requires: [build-backend]
-      # - scan-frontend:
-      #     requires: [build-frontend]
-      # - scan-backend:
-      #     requires: [build-backend]
+      - test-frontend:
+          requires: [build-frontend]
+      - test-backend:
+          requires: [build-backend]
+      - scan-frontend:
+          requires: [build-frontend]
+      - scan-backend:
+          requires: [build-backend]
