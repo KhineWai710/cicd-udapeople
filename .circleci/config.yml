@@ -19,12 +19,28 @@ jobs:
             npm i
             npm run build
             echo "export COMMIT_MESSAGE=\"$(git log --format=oneline -n 1 --abbrev-commit)\"" >> $BASH_ENV
-            cd ..
-            echo "export BUILD_SUCCESS_TEMPLATE=$(cat message_templates/build_success.json)" >> $BASH_ENV
       - slack/notify:
           event: pass
-          template: $BUILD_SUCCESS_TEMPLATE
-          channel: C01NF23KWTZ
+          custom: |
+            {
+              "blocks": [
+              {
+                "type": "header",
+                "text": {
+                  "type": "plain_text",
+                  "text": "Build Fail ! :red_circle:",
+                  "emoji": true
+                }
+              },
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "<$REPO_URL|*$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME*>(<${branch_url}|$CIRCLE_BRANCH>)\n*PullRequests*: $CIRCLE_PULL_REQUESTS \n <$CIRCLE_BUILD_URL|$CIRCLE_BUILD_NUM> \n <${commit_url}|${COMMIT_MESSAGE}> \n"
+                }
+              }
+            ]
+            }
       - slack/notify:
           custom: |
             {
