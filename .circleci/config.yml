@@ -71,6 +71,9 @@ jobs:
   build-backend:
     docker:
       - image: circleci/node:13.8.0
+    environment:
+      branch_url: << pipeline.project.git_url >>/tree/<< pipeline.git.branch >>
+      commit_url: << pipeline.project.git_url >>/commit/<< pipeline.git.revision >>
     steps:
       - checkout
       - restore_cache:
@@ -81,7 +84,8 @@ jobs:
             cd backend
             npm i
             npm run build
-            echo "export COMMIT_MESSAGE=\"$(git log --abbrev-commit --abbrev=1 --oneline)\"" >> $BASH_ENV
+            echo "export COMMIT_MESSAGE=\"$(git log --pretty=format:%s -n 1 --abbrev-commit)\"" >> $BASH_ENV
+            echo "export COMMIT_SHA=\"$(git log --pretty=format:%h -n 1 --abbrev-commit)\"" >> $BASH_ENV
       - slack/notify:
           event: pass
           custom: |
@@ -112,7 +116,7 @@ jobs:
                 "type": "header",
                 "text": {
                   "type": "plain_text",
-                  "text": "Build Success ! :large_green_circle: ",
+                  "text": "Build Success ! :large_green_circle:",
                   "emoji": true
                 }
               },
