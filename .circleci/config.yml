@@ -21,7 +21,7 @@ jobs:
             echo "export COMMIT_MESSAGE=\"$(git log --pretty=format:%s -n 1 --abbrev-commit)\"" >> $BASH_ENV
             echo "export COMMIT_SHA=\"$(git log --pretty=format:%h -n 1 --abbrev-commit)\"" >> $BASH_ENV
       - slack/notify:
-          event: fail
+          event: pass
           custom: |
             {
               "blocks": [
@@ -63,7 +63,7 @@ jobs:
               }
             ]
             }
-          event: pass
+          event: fail
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
