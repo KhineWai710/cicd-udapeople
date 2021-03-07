@@ -188,7 +188,7 @@ jobs:
           name: backend scan
           command: |
             cd backend
-            npm audit --audit-level=critical 
+            sudo npm audit fix --force
 
 workflows:
   default:
