@@ -20,7 +20,7 @@ jobs:
             npm run build
             echo "export COMMIT_MESSAGE=\"$(git log --format=oneline -n 1 --abbrev-commit)\"" >> $BASH_ENV
       - slack/notify:
-          event: pass
+          event: fail
           custom: |
             {
               "blocks": [
@@ -45,19 +45,24 @@ jobs:
           custom: |
             {
               "blocks": [
-                {
-                  "type": "section",
-                  "fields": [
-                    {
-                      "type": "plain_text",
-                      "text": "This is Pass notification",
-                      "emoji": true
-                    }
-                  ]
+              {
+                "type": "header",
+                "text": {
+                  "type": "plain_text",
+                  "text": "Build Success ! :green_circle:",
+                  "emoji": true
                 }
-              ]
+              },
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "Build Success $CIRCLE_PULL_REQUESTS of <$REPO_URL|*$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME*>(<${branch_url}|$CIRCLE_BRANCH>)\n *Build No*: <$CIRCLE_BUILD_URL|$CIRCLE_BUILD_NUM> \n *Commit* : <${commit_url}|${COMMIT_MESSAGE}> \n"
+                }
+              }
+            ]
             }
-          event: fail
+          event: pass
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
