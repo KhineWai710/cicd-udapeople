@@ -1,14 +1,13 @@
 ---
-# - name: Creates directory
-#   file:
-#     path: ~/web
-#     state: directory
+- name: Creates directory
+  file:
+    path: ~/web
+    state: directory
 
-# - name: Copy backend dist files web server
-#   copy:
-#     src: /root/project/backend
-#     dest: /home/ubuntu
-
+- name: Copy backend dist files web server
+  copy:
+    src: /root/project/backend
+    dest: /home/ubuntu
 
 - name: Build Node
   shell: |
