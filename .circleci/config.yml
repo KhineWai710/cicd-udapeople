@@ -292,7 +292,7 @@ jobs:
           name: Install dependencies
           command: |
             cd frontend
-            yum -y install nodejs
+            yum install nodejs
             npm i
       - run:
           name: Get backend url
@@ -345,12 +345,12 @@ workflows:
       # - deploy-infrastructure
       # - configure-infrastructure
       # - run-migrations
-      - deploy-infrastructure
-      - configure-infrastructure:
-          requires: [deploy-infrastructure]
-      - run-migrations:
-          requires: [configure-infrastructure]
-      - deploy-frontend:
-          requires: [run-migrations]
-      - deploy-backend:
-          requires: [run-migrations]
+      # - deploy-infrastructure
+      # - configure-infrastructure:
+      #     requires: [deploy-infrastructure]
+      # - run-migrations:
+      #     requires: [configure-infrastructure]
+      - deploy-frontend
+      #     requires: [run-migrations]
+      # - deploy-backend:
+      #     requires: [run-migrations]
