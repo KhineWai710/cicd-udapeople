@@ -12,6 +12,7 @@
 - name: Build Node
   shell: |
     cd /root/project/backend
+    npm i
     npm run build
     mv dist/* ~/web/
 
