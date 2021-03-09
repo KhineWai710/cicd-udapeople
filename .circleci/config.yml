@@ -271,6 +271,7 @@ jobs:
           name: Run migrations
           command: |
             cd backend
+            npm i
             npm run migrations > migration.txt
 
       - run:
@@ -339,8 +340,8 @@ workflows:
       # - scan-frontend:
       #     requires: [build-frontend]
       # - deploy-infrastructure
-      - configure-infrastructure
-      # - run-migrations
+      # - configure-infrastructure
+      - run-migrations
       # - deploy-frontend
       # - deploy-backend
       # - smoke-test:
