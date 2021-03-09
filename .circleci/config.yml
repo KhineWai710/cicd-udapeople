@@ -292,7 +292,7 @@ jobs:
           name: Install dependencies
           command: |
             cd frontend
-            yum install nodejs
+            yum install nodejs npm
             npm i
       - run:
           name: Get backend url
