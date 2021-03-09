@@ -292,7 +292,8 @@ jobs:
           name: Install dependencies
           command: |
             cd frontend
-            yum install nodejs npm
+            curl -sL https://rpm.nodesource.com/setup_10.x | bash -
+            yum install -y nodejs
             npm i
       - run:
           name: Get backend url
