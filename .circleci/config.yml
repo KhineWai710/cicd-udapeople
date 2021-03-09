@@ -292,6 +292,7 @@ jobs:
           name: Install dependencies
           command: |
             cd frontend
+            yum -y install nodejs
             npm i
       - run:
           name: Get backend url
@@ -326,7 +327,7 @@ jobs:
           name: Deploy backend
           command: |
             cd .circleci/ansible/
-            ansible-playbook -i ~/project/.circleci/ansible/inventory.txt deploy.yml
+            ansible-playbook -i ~/project/.circleci/ansible/inventory.txt deploy-backend.yml
       # Here's where you will add some code to rollback on failure  
 workflows:
   default:
