@@ -9,15 +9,18 @@ commands:
           name: Remove S3 files
           command: |
             aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+          when: on_fail 
       - run:
           name: Delete S3 bucket
           command: |
             aws s3 rb s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --force
+          when: on_fail 
       - run:
           name: Destroy environment
           command: |
             aws cloudformation delete-stack --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
             aws cloudformation delete-stack --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
+          when: on_fail 
   
   revert_migration:
     steps:     
@@ -30,6 +33,7 @@ commands:
               cd backend
               npm i
               npm run migrations:revert
+          when: on_fail 
 
 jobs:
   build-frontend:
@@ -262,10 +266,8 @@ jobs:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
-      - run:
-          name: on error
+
       - destroy_environment
-        when: on_fail
           # command: |
           #   aws cloudformation delete-stack --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
           #   aws cloudformation delete-stack --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
@@ -294,7 +296,6 @@ jobs:
             ansible-playbook -i ~/project/.circleci/ansible/inventory.txt configure-server.yml
       # Here's where you will add some code to rollback on failure
       - destroy_environment
-        when: on_fail   
 
   run-migrations:
     docker:
@@ -317,8 +318,8 @@ jobs:
             fi
      # Here's where you will add some code to rollback on failure 
       - destroy_environment
-        revert_migration
-        when: on_fail
+      - revert_migration
+
    
   deploy-frontend:
     docker:
@@ -347,8 +348,7 @@ jobs:
             aws s3 cp ./dist s3://udapeople-"${CIRCLE_WORKFLOW_ID:0:7}" --recursive
       # Here's where you will add some code to rollback on failure
       - destroy_environment
-        revert_migration
-        when: on_fail 
+      - revert_migration
 
   deploy-backend:
     docker:
@@ -372,8 +372,7 @@ jobs:
           no_output_timeout: 60m
       # Here's where you will add some code to rollback on failure
       - destroy_environment
-        revert_migration
-        when: on_fail
+      - revert_migration
 
   smoke-test:
     docker:
@@ -409,7 +408,6 @@ jobs:
               return 1
               fi
       - destroy_environment
-        when: on_fail
 
       # Here's where you will add some code to rollback on failure  
 
