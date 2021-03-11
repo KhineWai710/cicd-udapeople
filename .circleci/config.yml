@@ -317,9 +317,9 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprints: ["2e:d9:16:be:e4:05:4b:49:b3:dd:d5:3c:26:aa:12:bb"]
-      # - attach_workspace:
-      #     at: ~/
-      # - run: cat ~/project/.circleci/ansible/inventory.txt
+      - attach_workspace:
+          at: ~/
+      - run: cat ~/project/.circleci/ansible/inventory.txt
       - run:
           name: Install dependencies
           command: |
@@ -329,7 +329,7 @@ jobs:
           command: |
             cd .circleci/ansible/
             ansible-playbook -i ~/project/.circleci/ansible/inventory.txt deploy-backend.yml
-          no_output_timeout: 15m
+          no_output_timeout: 25m
       # Here's where you will add some code to rollback on failure  
 workflows:
   default:
@@ -348,11 +348,11 @@ workflows:
       # - configure-infrastructure
       # - run-migrations
       # - deploy-infrastructure
-      # - configure-infrastructure:
-      #     requires: [deploy-infrastructure]
-      # - run-migrations:
-      #     requires: [configure-infrastructure]
-      # - deploy-frontend:
-      #     requires: [run-migrations]
-      - deploy-backend
-          # requires: [run-migrations]
+      - configure-infrastructure:
+          requires: [deploy-infrastructure]
+      - run-migrations:
+          requires: [configure-infrastructure]
+      - deploy-frontend:
+          requires: [run-migrations]
+      - deploy-backend:
+          requires: [run-migrations]
