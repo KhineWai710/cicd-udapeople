@@ -327,7 +327,8 @@ jobs:
       - run:
           name: Deploy backend
           command: |
-            ansible-playbook -i ~/project/.circleci/ansible/inventory.txt /.circle/ansible/deploy-backend.yml
+            cd .circleci/ansible/
+            ansible-playbook -i ~/project/.circleci/ansible/inventory.txt deploy-backend.yml
           no_output_timeout: 25m
       # Here's where you will add some code to rollback on failure  
 workflows:
