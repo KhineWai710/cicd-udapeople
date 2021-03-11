@@ -9,15 +9,18 @@ commands:
           name: Remove S3 files
           command: |
             aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+          when: on_fail 
       - run:
           name: Delete S3 bucket
           command: |
             aws s3 rb s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --force
+          when: on_fail 
       - run:
           name: Destroy environment
           command: |
             aws cloudformation delete-stack --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
             aws cloudformation delete-stack --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
+          when: on_fail 
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
@@ -37,39 +40,6 @@ commands:
               npm install
               npm run migrations:revert
             fi
-
-commands:
-  destroy_environment:
-    steps:
-      - run:
-          name: Remove S3 files
-          command: |
-            aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
-          when: on_fail 
-      - run:
-          name: Delete S3 bucket
-          command: |
-            aws s3 rb s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --force
-          when: on_fail 
-      - run:
-          name: Destroy environment
-          command: |
-            aws cloudformation delete-stack --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
-            aws cloudformation delete-stack --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
-          when: on_fail 
-  
-  revert_migration:
-    steps:     
-      - run:
-          name: Revert Migrations
-          command: |
-            migration_status=$(curl -H "token: 63bb891f-21b3-4e53-a949-c1fc57b43346" --request GET https://api.memstash.io/values/migration_status_${CIRCLE_WORKFLOW_ID:0:7})
-            if [[ $migration_status==1 ]]
-            then
-              cd backend
-              npm i
-              npm run migrations:revert
-          when: on_fail 
 
 jobs:
   build-frontend:
@@ -423,7 +393,7 @@ jobs:
           name: Get backend url
           command: |
             BACKEND_IP=$(curl -H "token: 63bb891f-21b3-4e53-a949-c1fc57b43346" --request GET https://api.memstash.io/values/BACKEND_IP)
-            BACKEND_URL="http://${BACKEND_IP}:3000/api/status"
+            BACKEND_URL="http://${BACKEND_IP}:3030/api/status"
       - run:
           name: Backend smoke test.
           command: |
@@ -436,14 +406,16 @@ jobs:
       - run:
           name: Frontend smoke test.
           command: |
-              URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-east-1.amazonaws.com"
+              #URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-east-1.amazonaws.com"
+              URL="http://udapeople-e12b427.s3-website-us-east-1.amazonaws.com"
               if curl -s ${URL} | grep "Welcome"
               then
               return 1
               else
               return 1
               fi
-      - destroy_environment
+      # - destroy_environment
+      # - revert_migration
 
       # Here's where you will add some code to rollback on failure  
 
@@ -463,12 +435,13 @@ workflows:
       # - deploy-infrastructure
       # - configure-infrastructure
       # - run-migrations
-      - deploy-infrastructure
-      - configure-infrastructure:
-          requires: [deploy-infrastructure]
-      - run-migrations:
-          requires: [configure-infrastructure]
-      - deploy-frontend:
-          requires: [run-migrations]
-      - deploy-backend:
-          requires: [run-migrations]
+      # - deploy-infrastructure
+      # - configure-infrastructure:
+      #     requires: [deploy-infrastructure]
+      # - run-migrations:
+      #     requires: [configure-infrastructure]
+      # - deploy-frontend:
+      #     requires: [run-migrations]
+      # - deploy-backend:
+      #     requires: [run-migrations]
+      - smoke-test
