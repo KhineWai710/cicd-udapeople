@@ -1,6 +1,36 @@
 version: 2.1
 orbs:
   slack: circleci/slack@4.3.0
+
+commands:
+  destroy_environment:
+    steps:
+      - run:
+          name: Remove S3 files
+          command: |
+            aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+      - run:
+          name: Delete S3 bucket
+          command: |
+            aws s3 rb s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --force
+      - run:
+          name: Destroy environment
+          command: |
+            aws cloudformation delete-stack --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
+            aws cloudformation delete-stack --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
+  
+  revert_migration:
+    steps:     
+      - run:
+          name: Revert Migrations
+          command: |
+            migration_status=$(curl -H "token: 63bb891f-21b3-4e53-a949-c1fc57b43346" --request GET https://api.memstash.io/values/migration_status_${CIRCLE_WORKFLOW_ID:0:7})
+            if [[ $migration_status==1 ]]
+            then
+              cd backend
+              npm i
+              npm run migrations:revert
+
 jobs:
   build-frontend:
     docker:
@@ -234,10 +264,12 @@ jobs:
             - project/.circleci/ansible/inventory.txt
       - run:
           name: on error
-          command: |
-            aws cloudformation delete-stack --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
-            aws cloudformation delete-stack --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
-          when: on_fail
+      - destroy_environment
+        when: on_fail
+          # command: |
+          #   aws cloudformation delete-stack --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
+          #   aws cloudformation delete-stack --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
+          # when: on_fail
       # - destroy-environments:
       #     workflow_id: "${CIRCLE_WORKFLOW_ID}"
 
@@ -260,7 +292,9 @@ jobs:
           command: |
             cd .circleci/ansible/
             ansible-playbook -i ~/project/.circleci/ansible/inventory.txt configure-server.yml
-      # Here's where you will add some code to rollback on failure   
+      # Here's where you will add some code to rollback on failure
+      - destroy_environment
+        when: on_fail   
 
   run-migrations:
     docker:
@@ -282,6 +316,9 @@ jobs:
             else  curl -H "Content-Type: text/plain" -H "token: 63bb891f-21b3-4e53-a949-c1fc57b43346" --request PUT --data "0" https://api.memstash.io/values/migration_status_${CIRCLE_WORKFLOW_ID:0:7}
             fi
      # Here's where you will add some code to rollback on failure 
+      - destroy_environment
+        revert_migration
+        when: on_fail
    
   deploy-frontend:
     docker:
@@ -308,7 +345,10 @@ jobs:
             cd frontend
             npm run build
             aws s3 cp ./dist s3://udapeople-"${CIRCLE_WORKFLOW_ID:0:7}" --recursive
-      # Here's where you will add some code to rollback on failure   
+      # Here's where you will add some code to rollback on failure
+      - destroy_environment
+        revert_migration
+        when: on_fail 
 
   deploy-backend:
     docker:
@@ -329,8 +369,50 @@ jobs:
           command: |
             cd .circleci/ansible/
             ansible-playbook -i ~/project/.circleci/ansible/inventory.txt deploy-backend.yml
-          no_output_timeout: 25m
+          no_output_timeout: 60m
+      # Here's where you will add some code to rollback on failure
+      - destroy_environment
+        revert_migration
+        when: on_fail
+
+  smoke-test:
+    docker:
+      - image: alpine:latest
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update curl
+      - run:
+          name: Get backend url
+          command: |
+            BACKEND_IP=$(curl -H "token: 63bb891f-21b3-4e53-a949-c1fc57b43346" --request GET https://api.memstash.io/values/BACKEND_IP)
+            BACKEND_URL="http://${BACKEND_IP}:3000/api/status"
+      - run:
+          name: Backend smoke test.
+          command: |
+              if curl -s --head ${BACKEND_URL} 
+              then
+               return 0
+              else
+               return 1
+              fi
+      - run:
+          name: Frontend smoke test.
+          command: |
+              URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-east-1.amazonaws.com"
+              if curl -s ${URL} | grep "Welcome"
+              then
+              return 1
+              else
+              return 1
+              fi
+      - destroy_environment
+        when: on_fail
+
       # Here's where you will add some code to rollback on failure  
+
 workflows:
   default:
     jobs:
