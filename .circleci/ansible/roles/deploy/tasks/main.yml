@@ -14,8 +14,7 @@
     cd /home/ubuntu/backend
     npm i
     npm run build
-    mv dist/* ~/web/
 
 - name: Executing node
   shell: |
-    pm2 start ~/web/main.js -f;
+    pm2 start backend
