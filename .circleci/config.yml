@@ -2,8 +2,8 @@ version: 2.1
 orbs:
   slack: circleci/slack@4.3.0
 commands:
-  destroy-environment:
-    description: Destroy back-end and front-end cloudformation stacks given a workflow ID. 
+  destroy_environment:
+    # description: Destroy back-end and front-end cloudformation stacks given a workflow ID. 
     steps:
       - run:
           name: Remove S3 files
@@ -16,20 +16,19 @@ commands:
             aws s3 rb s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --force
           when: on_fail 
       - run:
-          name: Destroy environment
+          name: Destroy environments
           command: |
             aws cloudformation delete-stack --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
             aws cloudformation delete-stack --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
           when: on_fail 
 
   revert-migrations:
-    description: Revert the last migration if successfully run in the current workflow.
+    # description: Revert the last migration if successfully run in the current workflow.
     # parameters:
     #   # Add parameter here     
     steps:
       - run:
           name: Revert migrations
-          # Add when this will run
           command: |
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
             migration_status=$(curl -H "token: 63bb891f-21b3-4e53-a949-c1fc57b43346" --request GET https://api.memstash.io/values/migration_status_${CIRCLE_WORKFLOW_ID:0:7})
@@ -37,7 +36,7 @@ commands:
             if(( $migration_status==1 ));
             then
             cd ~/project/backend
-            npm install
+            npm i
             npm run migrations:revert
             fi
 
@@ -411,7 +410,6 @@ jobs:
       - run:
           name: Frontend smoke test.
           command: |
-              #URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-east-1.amazonaws.com"
               URL="http://udapeople-e12b427.s3-website-us-east-1.amazonaws.com"
               if curl -s ${URL} | grep "Welcome"
               then
