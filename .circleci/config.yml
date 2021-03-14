@@ -21,19 +21,19 @@ commands:
       - run:
           name: Remove S3 files
           command: |
-            aws s3 rm s3://udapeople-${workflow_id} --recursive
+            echo ${workflow_id}
+            aws s3 rm s3://udapeople-$workflow_id --recursive
           when: on_fail 
 
       - run:
           name: Delete S3 bucket
           command: |
-            aws s3 rb s3://udapeople-${workflow_id} --force
+            aws s3 rb s3://udapeople-$workflow_id --force
           when: on_fail
 
       - run:
           name: Destroy frontend environments
           command: |
-            echo 
             aws cloudformation delete-stack --stack-name "udapeople-frontend-${workflow_id}"
           when: on_fail 
 
