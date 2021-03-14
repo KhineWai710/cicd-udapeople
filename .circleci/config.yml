@@ -446,7 +446,7 @@ jobs:
 
   cloudfront-update:
     docker:
-      image: amazon/aws-cli
+      - image: amazon/aws-cli
     steps:
       - checkout 
       - run:
@@ -463,7 +463,7 @@ jobs:
 
   cleanup:
     docker:
-      image: amazon/aws-cli
+      - image: amazon/aws-cli
     steps:
       - checkout
       - run:
