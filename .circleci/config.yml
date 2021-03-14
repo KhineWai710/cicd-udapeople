@@ -17,18 +17,11 @@ commands:
             pip install awscli
             fi
           when: on_fail
-
-      - run:
+      
+    - run:
           name: Remove S3 files
           command: |
-            echo ${workflow_id}
             aws s3 rm s3://udapeople-$workflow_id --recursive
-          when: on_fail 
-
-      - run:
-          name: Delete S3 bucket
-          command: |
-            aws s3 rb s3://udapeople-$workflow_id --force
           when: on_fail
 
       - run:
