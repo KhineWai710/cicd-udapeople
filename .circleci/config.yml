@@ -3,12 +3,11 @@ orbs:
   slack: circleci/slack@4.3.0
 commands:
   destroy-environment:
-    description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
-    Parameters:
+    parameters:
       workflow_id:
-        Description: workflow id
-        Type: String
-        Default: b988ccf0-7b2c-4ec9-bd38-5abb0a74bb16
+        description: workflow id
+        type: string
+        default: "b988ccf0-7b2c-4ec9-bd38-5abb0a74bb16"
 
     steps:
       - run:
@@ -45,12 +44,12 @@ commands:
       
 
   revert-migrations:
-    Description: Revert the last migration if successfully run in the current workflow.
-    Parameters:
+    description: Revert the last migration if successfully run in the current workflow.
+    parameters:
       workflow_id:
-        Description: workflow id
-        Type: String
-        Default: b988ccf0-7b2c-4ec9-bd38-5abb0a74bb16   
+        description: workflow id
+        type: string
+        default: "b988ccf0-7b2c-4ec9-bd38-5abb0a74bb16"   
     steps:
       - run:
           name: Revert migrations
