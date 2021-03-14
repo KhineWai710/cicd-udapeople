@@ -18,7 +18,7 @@ commands:
             fi
           when: on_fail
       
-    - run:
+      - run:
           name: Remove S3 files
           command: |
             echo $workflow_id 
@@ -31,13 +31,12 @@ commands:
             aws cloudformation delete-stack --stack-name "udapeople-frontend-${workflow_id}"
           when: on_fail 
 
-      - run:
+      - run:    
           name: Destroy backend environments
           command: |
             aws cloudformation delete-stack --stack-name "udapeople-backend-${workflow_id}"
           when: on_fail 
       
-
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
     parameters:
