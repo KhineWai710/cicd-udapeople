@@ -21,13 +21,13 @@ commands:
       - run:
           name: Remove S3 files
           command: |
-            aws s3 rm s3://udapeople-${WORKFLOW_ID} --recursive
+            aws s3 rm s3://udapeople-"${WORKFLOW_ID}" --recursive
           when: on_fail 
 
       - run:
           name: Delete S3 bucket
           command: |
-            aws s3 rb s3://udapeople-${WORKFLOW_ID} --force
+            aws s3 rb s3://udapeople-"${WORKFLOW_ID}" --force
           when: on_fail
 
       - run:
