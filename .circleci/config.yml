@@ -21,8 +21,8 @@ commands:
       - run:
           name: Remove S3 files
           command: |
-            echo $workflow_id 
-            aws s3 rm s3://udapeople-$workflow_id --recursive
+            echo ${workflow_id}
+            aws s3 rm s3://udapeople-${workflow_id} --recursive
           when: on_fail
 
       - run:
