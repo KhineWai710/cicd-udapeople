@@ -3,6 +3,13 @@ orbs:
   slack: circleci/slack@4.3.0
 commands:
   destroy-environment:
+    description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
+    Parameters:
+      workflow_id:
+        Description: workflow id
+        Type: String
+        Default: b988ccf0-7b2c-4ec9-bd38-5abb0a74bb16
+
     steps:
       - run:
           name: Install AWS CLI
@@ -15,39 +22,41 @@ commands:
       - run:
           name: Remove S3 files
           command: |
-            aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID} --recursive
+            aws s3 rm s3://udapeople-${WORKFLOW_ID} --recursive
           when: on_fail 
 
       - run:
           name: Delete S3 bucket
           command: |
-            aws s3 rb s3://udapeople-${CIRCLE_WORKFLOW_ID} --force
+            aws s3 rb s3://udapeople-${WORKFLOW_ID} --force
           when: on_fail
 
       - run:
           name: Destroy frontend environments
           command: |
-            aws cloudformation delete-stack --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID}"
+            aws cloudformation delete-stack --stack-name "udapeople-frontend-${WORKFLOW_ID}"
           when: on_fail 
 
       - run:
           name: Destroy backend environments
           command: |
-            aws cloudformation delete-stack --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID}"
+            aws cloudformation delete-stack --stack-name "udapeople-backend-${WORKFLOW_ID}"
           when: on_fail 
       
 
   revert-migrations:
-    # description: Revert the last migration if successfully run in the current workflow.
-    # parameters:
-    #   # Add parameter here     
+    Description: Revert the last migration if successfully run in the current workflow.
+    Parameters:
+      workflow_id:
+        Description: workflow id
+        Type: String
+        Default: b988ccf0-7b2c-4ec9-bd38-5abb0a74bb16   
     steps:
       - run:
           name: Revert migrations
           command: |
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
             migration_status=$(curl -H "token: 63bb891f-21b3-4e53-a949-c1fc57b43346" --request GET https://api.memstash.io/values/migration_status_${CIRCLE_WORKFLOW_ID})
- 
             if(( $migration_status==1 ));
             then
             cd ~/project/backend
@@ -411,7 +420,7 @@ jobs:
 
   smoke-test:
     docker:
-      - image: alpine:latest
+      - image: python:3.7-alpine3.11
     steps:
       - checkout
       - run:
@@ -442,6 +451,7 @@ jobs:
               return 1
               fi
       - destroy-environment
+        # workflow_id: "${CIRCLE_WORKFLOW_ID}"
       - revert-migrations
 
   cloudfront-update:
@@ -491,6 +501,6 @@ workflows:
       #     requires: [configure-infrastructure]
       # - deploy-frontend:
       #     requires: [run-migrations]
-      - deploy-backend
-      - smoke-test:
-          requires: [deploy-backend]
+      # - deploy-backend
+      - smoke-test
+          # requires: [deploy-backend]
