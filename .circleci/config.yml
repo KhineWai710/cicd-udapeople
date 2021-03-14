@@ -385,8 +385,8 @@ jobs:
           command: |
             apk add --update ansible
             apk add --update curl
-      - run
-          name: Set Environment
+      - run:
+          name: Set Environment variable
           command: |
             cd backend
             touch .env
