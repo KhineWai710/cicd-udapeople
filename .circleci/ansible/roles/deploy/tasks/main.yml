@@ -1,12 +1,17 @@
 ---
-- name: Copy backend dist files web server
-  copy:
-    src: /root/project/backend/backend.tar.gz
-    dest: /home/ubuntu/backend
+- name: Compress directory /path/to/foo/ into /path/to/foo.tgz
+  archive:
+    path: /root/project/backend
+    dest: /home/ubuntu/backend.tar.gz
+    
+# - name: Copy backend dist files web server
+#   copy:
+#     src: /root/project/backend/backend.tar.gz
+#     dest: /home/ubuntu/backend
 
 - name: Untar backend dist files web server
   unarchive:
-    src: backend.tar.gz
+    src: /home/ubuntu/backend.tar.gz
     dest: /home/ubuntu/backend
     
 # - name: Copy backend dist files web server
@@ -16,7 +21,7 @@
 
 - name: Build Node
   shell: |
-    cd /root/project/backend
+    cd /home/ubuntu/backend
     npm i
     npm run build
 
