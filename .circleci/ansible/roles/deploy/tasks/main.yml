@@ -1,16 +1,32 @@
 ---
 # - name: Copy backend dist files web server
+#   become: true
+#   copy:
+#     src: /root/project/backend/backend.tar.gz
+#     dest: /home/ubuntu/backend
+
+# - name: "untar folder
+#   become: true
+#   ansible.builtin.unarchive:
+#     src: backend.tar.gz
+#     dest: /home/ubuntu/backend
+    
+# - name: Copy backend dist files web server
 #   copy:
 #     src: /root/project/backend
 #     dest: /home/ubuntu
 
 - name: Build Node
+  become: true
   shell: |
-    cd /home/ubuntu/backend
+    cd /root/project/backend
     npm i
     npm run build
 
 - name: Executing node
+  become: true
+#   shell: |
+#     cd /home/ubuntu/backend
   shell: |
-    cd /home/ubuntu/backend
+    cd /root/project/backend
     pm2 start npm --name backend -- start
