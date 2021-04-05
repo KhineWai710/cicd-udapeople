@@ -1,15 +1,15 @@
 ---
-# - name: Copy backend dist files web server
-#   become: true
-#   copy:
-#     src: /root/project/backend/backend.tar.gz
-#     dest: /home/ubuntu/backend
+- name: Copy backend dist files web server
+  become: true
+  copy:
+    src: /root/project/backend/backend.tar.gz
+    dest: /home/ubuntu/backend
 
-# - name: "untar folder
-#   become: true
-#   ansible.builtin.unarchive:
-#     src: backend.tar.gz
-#     dest: /home/ubuntu/backend
+- name: "untar folder
+  become: true
+  ansible.builtin.unarchive:
+    src: backend.tar.gz
+    dest: /home/ubuntu/backend
     
 # - name: Copy backend dist files web server
 #   copy:
