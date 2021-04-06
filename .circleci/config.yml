@@ -408,6 +408,7 @@ jobs:
          name: Make tar
          command: |
            tar czf backend.tar.gz backend/
+           mv backend.tar.gz /tmp/
 
       - run:
          name: Deploy backend
