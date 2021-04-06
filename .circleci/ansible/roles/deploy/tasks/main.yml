@@ -9,7 +9,7 @@
   become: yes
   copy:
     src: /root/project/backend
-    dest: /home/ubuntu/backend
+    dest: /home/ubuntu/
 
 # - name: Untar backend dist files web server
 #   unarchive:
