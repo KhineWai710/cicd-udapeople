@@ -5,16 +5,16 @@
 #     path: /root/project/backend
 #     dest: /home/ubuntu/backend.tar.gz
     
-- name: Copy backend dist files web server
-  become: yes
-  copy:
-    src: /root/project/backend
-    dest: /home/ubuntu/
+# - name: Copy backend dist files web server
+#   become: yes
+#   copy:
+#     src: /root/project/backend
+#     dest: /home/ubuntu/
 
-# - name: Untar backend dist files web server
-#   unarchive:
-#     src: /home/ubuntu/backend.tar.gz
-#     dest: /home/ubuntu/project/backend
+- name: Untar backend dist files web server
+  unarchive:
+    src: /home/project/backend/backend.tar.gz
+    dest: /home/ubuntu/
     
 # - name: Copy backend dist files web server
 #   copy:
