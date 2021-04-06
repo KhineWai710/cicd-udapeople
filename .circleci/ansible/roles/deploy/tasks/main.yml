@@ -26,7 +26,6 @@
     npm i
     npm run build
   become: true
-  become_user: root
 
 
 - name: Executing node
@@ -34,4 +33,3 @@
     cd /root/project/backend
     pm2 start npm --name backend -- start
   become: true
-  become_user: root
