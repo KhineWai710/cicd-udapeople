@@ -13,7 +13,7 @@
 
 - name: Untar backend dist files web server
   unarchive:
-    src: /home/project/backend/backend.tar.gz
+    src: /tmp/backend.tar.gz
     dest: /home/ubuntu/
     
 # - name: Copy backend dist files web server
