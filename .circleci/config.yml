@@ -404,6 +404,10 @@ jobs:
             echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> .env
             echo TYPEORM_MIGRATIONS=$TYPEORM_MIGRATIONS >> .env
       - run:
+        name: Make tar
+        command: |
+          tar czf backend.tar.gz backend/
+      - run:
           name: Deploy backend
           command: |
             cd .circleci/ansible/
