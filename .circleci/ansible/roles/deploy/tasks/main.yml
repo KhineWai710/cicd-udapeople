@@ -1,14 +1,15 @@
----
+# ---
 # - name: Compress directory /root/project/backend into /home/ubuntu/backend
 #   become: yes
 #   archive:
 #     path: /root/project/backend
 #     dest: /home/ubuntu/backend.tar.gz
     
-# - name: Copy backend dist files web server
-#   copy:
-#     src: /root/project/backend/backend.tar.gz
-#     dest: /home/ubuntu/backend
+- name: Copy backend dist files web server
+  become: yes
+  copy:
+    src: /root/project/backend
+    dest: /home/ubuntu/backend
 
 # - name: Untar backend dist files web server
 #   unarchive:
@@ -22,14 +23,12 @@
 
 - name: Build Node
   shell: |
-    cd /root/project/backend
+    cd /home/ubuntu/backend
     npm i
     npm run build
-  become: true
 
 
 - name: Executing node
   shell: |
-    cd /root/project/backend
+    cd /home/ubuntu/backend
     pm2 start npm --name backend -- start
-  become: true
