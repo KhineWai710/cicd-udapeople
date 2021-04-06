@@ -256,6 +256,7 @@ jobs:
           name: Installing dependencies
           command: |
             yum install -y tar gzip
+            
       - run:
           name: Ensure back-end infrastructure exists
           command: |
@@ -387,6 +388,7 @@ jobs:
           command: |
             apk add --update ansible
             apk add --update curl
+            apk add openssh-client
       - run:
           name: Set Environment variable
           command: |
