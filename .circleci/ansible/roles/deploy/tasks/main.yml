@@ -1,26 +1,9 @@
 # ---
-# - name: Compress directory /root/project/backend into /home/ubuntu/backend
-#   become: yes
-#   archive:
-#     path: /root/project/backend
-#     dest: /home/ubuntu/backend.tar.gz
-    
-# - name: Copy backend dist files web server
-#   become: yes
-#   copy:
-#     src: /root/project/backend
-#     dest: /home/ubuntu/
-
 - name: Untar backend dist files web server
   unarchive:
     src: /tmp/backend.tar.gz
     dest: /home/ubuntu/
     
-# - name: Copy backend dist files web server
-#   copy:
-#     src: /root/project/backend
-#     dest: /home/ubuntu
-
 - name: Build Node
   shell: |
     cd /home/ubuntu/backend
