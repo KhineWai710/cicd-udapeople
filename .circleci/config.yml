@@ -289,7 +289,7 @@ jobs:
       #       aws cloudformation delete-stack --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID}"
       #       aws cloudformation delete-stack --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID}"
       #     when: on_fail
-      - destroy-environments
+      - destroy-environment
 
   configure-infrastructure:
     docker:
@@ -487,6 +487,7 @@ jobs:
 workflows:
   default:
     jobs:
+      - deploy-infrastructure
       - configure-infrastructure:
           requires: [deploy-infrastructure]
       - run-migrations:
