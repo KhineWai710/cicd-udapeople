@@ -15,20 +15,20 @@ commands:
       - run:
           name: Remove S3 files
           command: |
-            echo ${workflow_id}
-            aws s3 rm s3://udapeople-${workflow_id} --recursive
+            echo ${CIRCLE_WORKFLOW_ID}
+            aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID} --recursive
           when: on_fail
 
       - run:
           name: Destroy frontend environments
           command: |
-            aws cloudformation delete-stack --stack-name "udapeople-frontend-${workflow_id}"
+            aws cloudformation delete-stack --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID}
           when: on_fail 
 
       - run:    
           name: Destroy backend environments
           command: |
-            aws cloudformation delete-stack --stack-name "udapeople-backend-${workflow_id}"
+            aws cloudformation delete-stack --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID}
           when: on_fail 
       
   revert-migrations:
@@ -425,7 +425,7 @@ jobs:
       - run:
           name: Backend smoke test.
           command: |
-              BACKEND_IP=BACKEND_IP=$(curl -H "token: 63bb891f-21b3-4e53-a949-c1fc57b43346" --request GET https://api.memstash.io/values/BACKEND_IP)
+              BACKEND_IP=$(curl -H "token: 63bb891f-21b3-4e53-a949-c1fc57b43346" --request GET https://api.memstash.io/values/BACKEND_IP)
               BACKEND_API_STATUS="http://${BACKEND_IP}:3030/api/status"
               echo $BACKEND_API_STATUS
               if curl -s --head ${BACKEND_API_STATUS}
