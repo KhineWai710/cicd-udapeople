@@ -7,7 +7,7 @@
 - name: Build Node
   shell: |
     cd /home/ubuntu/backend
-    npm i
+    npm install --production
     npm run build
 
 
