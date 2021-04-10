@@ -456,8 +456,8 @@ jobs:
           command: |
             aws cloudformation deploy \
             --template-file .circleci/files/cloudfront.yml \
-            --stack-name cloudfront-66892dc8-d175-451e-b42d-b3b6dbb16ca2 \
-            --parameter-overrides WorkflowID=66892dc8-d175-451e-b42d-b3b6dbb16ca2
+            --stack-name "cloudfront-66892dc8-d175-451e-b42d-b3b6dbb16ca2" \
+            --parameter-overrides "WorkflowID=66892dc8-d175-451e-b42d-b3b6dbb16ca2"
 
   cleanup:
     docker:
@@ -468,6 +468,7 @@ jobs:
           name: Get old stack workflow id
           command: |
             export OldWorkflowID=$(aws cloudformation list-exports --query "Exports[?Name==\`WorkflowID\`].Value" --no-paginate --output text)
+            echo $OldWorkflowID
             export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" --stack-status-filter CREATE_COMPLETE --no-paginate --output text)) #put the list of stacks here
       - run:
           name: Remove old stacks and files
