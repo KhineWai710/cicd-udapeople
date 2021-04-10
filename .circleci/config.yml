@@ -407,7 +407,7 @@ jobs:
          name: Deploy backend
          command: |
           cd .circleci/ansible/
-          ansible-playbook -i ~/project/.circleci/ansible/inventory.txt deploy-backend.yml
+          ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ~/project/.circleci/ansible/inventory.txt deploy-backend.yml
 
       - destroy-environment
       - revert-migrations
