@@ -480,6 +480,10 @@ jobs:
       - attach_workspace:
           at: .circleci/ansible/
       - run:
+          name: Install dependencies
+          command: |
+            yum install -y tar gzip
+      - run:
           name: Remove old stacks and files
           command: |
             originalWorkflowID=`cat ./.circleci/ansible/originalWorkflowID.txt`
