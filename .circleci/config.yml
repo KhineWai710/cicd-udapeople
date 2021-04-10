@@ -455,9 +455,9 @@ jobs:
           name: Update cloudfront distribution
           command: |
             aws cloudformation deploy \
-            --template-file circleci/files/cloudfront.yml \
-            --stack-name "cloudfront-${CIRCLE_WORKFLOW_ID}" \
-            --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID}"
+            --template-file .circleci/files/cloudfront.yml \
+            --stack-name cloudfront-66892dc8-d175-451e-b42d-b3b6dbb16ca2 \
+            --parameter-overrides WorkflowID=66892dc8-d175-451e-b42d-b3b6dbb16ca2
 
   cleanup:
     docker:
@@ -492,22 +492,22 @@ workflows:
       #     requires: [build-backend]
       # - scan-frontend:
       #     requires: [build-frontend]
-      - deploy-infrastructure:
-          # requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-          filters:
-            branches:
-              only: [main]
-      - configure-infrastructure:
-          requires: [deploy-infrastructure]
-      - run-migrations:
-          requires: [configure-infrastructure]
-      - deploy-frontend:
-          requires: [run-migrations]
-      - deploy-backend:
-          requires: [run-migrations]
-      - smoke-test:
-          requires: [deploy-backend, deploy-frontend]
-      - cloudfront-update:
-          requires: [smoke-test]
+#       - deploy-infrastructure:
+#           # requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+#           filters:
+#             branches:
+#               only: [main]
+#       - configure-infrastructure:
+#           requires: [deploy-infrastructure]
+#       - run-migrations:
+#           requires: [configure-infrastructure]
+#       - deploy-frontend:
+#           requires: [run-migrations]
+#       - deploy-backend:
+#           requires: [run-migrations]
+#       - smoke-test:
+#           requires: [deploy-backend, deploy-frontend]
+      - cloudfront-update
+         # requires: [smoke-test]
       - cleanup:
           requires: [cloudfront-update]
