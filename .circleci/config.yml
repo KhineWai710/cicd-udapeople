@@ -457,7 +457,7 @@ jobs:
             aws cloudformation deploy \
             --template-file .circleci/files/cloudfront.yml \
             --stack-name "cloudfront-66892dc8-d175-451e-b42d-b3b6dbb16ca2" \
-            --parameter-overrides "WorkflowID=66892dc8-d175-451e-b42d-b3b6dbb16ca2"
+            --parameter-overrides WorkflowID="66892dc8-d175-451e-b42d-b3b6dbb16ca2"
 
   cleanup:
     docker:
