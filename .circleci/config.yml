@@ -477,12 +477,13 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
-      - attach_workspace:
-          at: .circleci/ansible/
       - run:
           name: Install dependencies
           command: |
             yum install -y tar gzip
+            yum -y install gzip
+      - attach_workspace:
+          at: .circleci/ansible/
       - run:
           name: Remove old stacks and files
           command: |
