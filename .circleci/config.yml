@@ -435,6 +435,12 @@ jobs:
               BACKEND_API_STATUS="http://${BACKEND_IP}:3030/api/status"
               echo $BACKEND_API_STATUS
               curl -s $BACKEND_API_STATUS
+               if curl -s ${BACKEND_API_STATUS} | grep "ok"
+                then
+                  return 1
+                else
+                  return 0
+                fi          
       - run:
           name: Frontend smoke test.
           command: |
