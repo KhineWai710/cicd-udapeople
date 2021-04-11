@@ -436,10 +436,10 @@ jobs:
               echo $BACKEND_API_STATUS
               if curl -s ${BACKEND_API_STATUS} | grep "ok"
               then
-                return 1
+                 exit 0
               else
-                  return 0
-              fi          
+                 exit 1
+              fi     
       - run:
           name: Frontend smoke test.
           command: |
