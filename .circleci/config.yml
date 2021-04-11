@@ -424,6 +424,8 @@ jobs:
       - run:
           name: Install dependencies
           command: |
+            apk add --update tar
+            apk add --update gzip
             apk add --update curl
 
       - run:
@@ -433,7 +435,6 @@ jobs:
               BACKEND_API_STATUS="http://${BACKEND_IP}:3030/api/status"
               echo $BACKEND_API_STATUS
               curl -s $BACKEND_API_STATUS
-          background: true
       - run:
           name: Frontend smoke test.
           command: |
