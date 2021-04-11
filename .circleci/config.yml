@@ -44,7 +44,7 @@ commands:
           command: |
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
             migration_status=$(curl -H "token: 63bb891f-21b3-4e53-a949-c1fc57b43346" --request GET https://api.memstash.io/values/migration_status_${workflow_id})
-            if(( $migration_status==1 ));
+            if(( $migration_status == 1 ));
             then
             cd ~/project/backend
             npm i
